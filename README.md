@@ -4,7 +4,7 @@
 
 Teaching demonstration materials for a course module on turning insect frass (the excrement, uneaten feed and exuviae left over from insect farming) into biogas through anaerobic digestion. The repository is a [Quarto](https://quarto.org/) website that brings together a short course description, an interactive biogas dashboard and the accompanying slide deck.
 
-🌐 **Live site:** `https://tklammsteiner.github.io/teachingdemonstration/`
+🌐 **Live site:** `https://tklammsteiner.github.io/biogas-course-demo/`
 
 ---
 
@@ -104,6 +104,6 @@ CC BY 4.0 for teaching materials and MIT for code.
 
 If you use or adapt these materials, please credit the author:
 
-Thomas Klammsteiner, *Valorization of Insect Frass for Biogas Production* (2026). Available at: `https://github.com/tklammsteiner/teachingdemonstration`
+Thomas Klammsteiner, *Valorization of Insect Frass for Biogas Production* (2026). Available at: `https://github.com/tklammsteiner/biogas-course-demo`
 
 📧 klammsteiner@pm.me
