@@ -41,7 +41,7 @@ By the end of the course, students should be able to:
 | **Index** | Course landing page and overview | `index.qmd` |
 | **About** | About the instructor | `about.qmd` |
 | **Biogas dashboard** | Interactive demo for exploring biogas production data | `dashboard.qmd` |
-| **Slide deck** | Lecture slides for the course | *(add path or link)* |
+| **Slide deck** | Lecture slides for the course | [presentation.html](https://tklammsteiner.github.io/biogas-course-demo/_assets/presentation/presentation.html) |
 
 ### Biogas dashboard demo
 
