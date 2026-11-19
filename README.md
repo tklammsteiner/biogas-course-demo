@@ -16,25 +16,21 @@ Insect farming (black soldier fly, mealworm, cricket) is growing fast as a sourc
 
 By the end of the course, students should be able to:
 
-1. Describe the composition and characteristics of insect frass as an AD feedstock (C/N ratio, volatile solids, ammonia content, moisture).
-2. Explain the four stages of anaerobic digestion: hydrolysis, acidogenesis, acetogenesis and methanogenesis.
-3. Identify key process parameters (temperature, pH, organic loading rate, hydraulic retention time) and their effect on biogas yield.
-4. Recognise common challenges, such as ammonia inhibition, and strategies like co-digestion to mitigate them.
-5. Interpret biogas production data (cumulative yield, methane content, biochemical methane potential) using an interactive dashboard.
-6. Place frass-to-biogas within a circular bioeconomy, including digestate use as a biofertilizer.
+1. Explain the role of insect farming in circular bioeconomy systems
+2. Characterize insect frass as key side-stream
+3. Explain and evaluate the role of co-substrates in anaerobic digestion
+4. Analyze a recent case study where frass is used for biomethanization
+5. Evaluate key opportunities & challenges of using insect frass as co-substrate
 
 ### Topics covered
 
 | Module | Topic |
 |---|---|
 | 1 | Insect farming and the frass side stream |
-| 2 | Fundamentals of anaerobic digestion |
-| 3 | Feedstock characterization and pretreatment |
-| 4 | Process optimization and co-digestion |
-| 5 | Biogas yield, upgrading and energy balance |
-| 6 | Digestate valorization and sustainability |
-
-> Adjust the modules above to match your actual syllabus.
+| 2 | Legislational requirements for frass |
+| 3 | Co-substrates in anaerobic digestion |
+| 4 | Case study |
+| 5 | Opportunities & challenges |
 
 ---
 
@@ -42,7 +38,7 @@ By the end of the course, students should be able to:
 
 | Page | Description | File |
 |---|---|---|
-| **Home** | Course landing page and overview | `index.qmd` |
+| **Index** | Course landing page and overview | `index.qmd` |
 | **About** | About the instructor | `about.qmd` |
 | **Biogas dashboard** | Interactive demo for exploring biogas production data | `dashboard.qmd` |
 | **Slide deck** | Lecture slides for the course | *(add path or link)* |
@@ -55,44 +51,15 @@ The dashboard (`dashboard.qmd`) is a hands-on demonstration used during the sess
 - Comparison between frass and other substrates or co-digestion mixtures
 - Effect of process parameters on yield
 
-> Update this list to reflect what your dashboard actually shows, and note whether the data are measured, literature-based or simulated.
-
 ### Slide deck
 
-The slide deck accompanies the lecture and walks through the concepts above. 📑 **[View the slides](#)** *(replace with link)*
-
----
-
-## Repository structure
-
-```
-.
-├── _quarto.yml          # Quarto project and website configuration
-├── index.qmd            # Home page
-├── about.qmd            # About me
-├── dashboard.qmd        # Biogas dashboard demo
-├── custom.scss          # Theme customisation (Sass)
-├── styles.css           # Additional styling
-├── _assets/             # Images, data and other static files
-├── docs/                # Rendered site output (served by GitHub Pages)
-└── teaching-materials.Rproj   # RStudio project file
-```
+The slide deck accompanies the lecture and walks through the concepts above. 📑 **[View the slides](https://tklammsteiner.github.io/biogas-course-demo/_assets/presentation/presentation.html)**
 
 ---
 
 ## About the instructor
 
 See the [About page](about.qmd) for background, research interests and contact details.
-
----
-
-## Suggested reading
-
-*(Add your key references here, for example:)*
-
-- Review articles on insect frass composition and valorization
-- Anaerobic digestion fundamentals (e.g. Angelidaki et al., BMP protocols)
-- Studies on co-digestion and ammonia inhibition
 
 ---
 
