@@ -1,0 +1,7 @@
+---
+title: "Biogas dashboard"
+embed-resources: true
+---
+
+## Frass dashboard
+

@@ -1,0 +1,12 @@
+{
+  "hash": "45174b23ad596aa7e06ec3ae56e48676",
+  "result": {
+    "engine": "jupyter",
+    "markdown": "---\ntitle: \"Bioprocessing of agricultural side streams into biofuels\"\nsubtitle: \"Using insect frass for bioenergy\"\nauthor: \"Thomas Klammsteiner, PhD\"\nurl: \"https://tklammsteiner.github.io/\"\nemail: \"thomasklammsteiner@proton.me\"\nemail-obfuscation: javascript\ndate: today\neditor: source\n---\n\n# About this course\n\n\n\n# Course materials\n\n## Slides\n\n```{html}\n<div style=\"width:90%; margin:0 auto;\">\n    <iframe src=\"_assets/teaching-demonstration.html\" \n    style=\"height: 400px; width:100%; border:5px solid #2a76dd; border-radius:15px;\"></iframe>\n</div>\n```\n\n\n\n\n## Further information\n\n- Frass4Gas project: [https://tklammsteiner.github.io/frass4gas](https://tklammsteiner.github.io/frass4gas)\n\n",
+    "supporting": [
+      "index_files"
+    ],
+    "filters": [],
+    "includes": {}
+  }
+}

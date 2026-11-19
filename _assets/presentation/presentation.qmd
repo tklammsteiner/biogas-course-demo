@@ -1,0 +1,92 @@
+---
+title: "<h2>Valorizing insect frass for biogas production</h2>"
+subtitle: |
+  <h4>Bioprocessing of agricultural side streams into biofuels</h4>
+  _Teaching demonstration lecture - Master’s study programme_
+author: 
+  - name: "Thomas Klammsteiner, PhD"
+    email: "klammsteiner@pm.me"
+    url: "https://tklammsteiner.github.io"
+date: 2026-06-04
+date-format: "dddd, D MMMM YYYY"
+copyright: "CC-BY"
+format: 
+  revealjs:
+    scroll-view: 
+      layout: compact
+      progress: true
+    width: 1050
+    height: 700
+    margin: 0.1
+    slide-number: true
+    preview-links: true
+    multiplex: true
+    controls: true
+    embed-resources: true
+    theme: [default, custom.scss]
+    fig-align: left
+    smaller: true
+    logo: "../media/logo-light.svg"
+title-slide-attributes: 
+  data-background-color: "#004225"
+editor: source
+---
+
+## {data-menu-title="Learning outcomes"}
+
+![](slides/Slide2.PNG){.absolute left=0 bottom=0 width="100%"}
+
+
+## {data-menu-title="Bioconversion"}
+
+![](slides/Slide4.PNG){.absolute left=0 bottom=0 width="100%"}
+
+
+## {data-menu-title="Harvested larvae" background-image="larvae.gif" background-size="cover"}
+
+## {data-menu-title="Bioconversion"}
+![](slides/Slide6.PNG){.absolute left=0 bottom=0 width="100%"}
+
+
+## {data-menu-title="Insect frass"}
+![](slides/Slide7.PNG){.absolute left=0 bottom=0 width="100%"}
+
+## {data-menu-title="Insect frass"}
+
+![](slides/Slide8.PNG){.absolute left=0 bottom=0 width="100%"}
+
+## {data-menu-title="Insect frass"}
+
+![](slides/Slide9.PNG){.absolute left=0 bottom=0 width="100%"}
+
+## {data-menu-title="Co-substrates"}
+
+![](slides/Slide11.PNG){.absolute left=0 bottom=0 width="100%"}
+
+## {data-menu-title="Insect frass as co-substrate"}
+
+![](slides/Slide12.PNG){.absolute left=0 bottom=0 width="100%"}
+
+## {data-menu-title="Insect frass as co-substrate"}
+
+![](slides/Slide13.PNG){.absolute left=0 bottom=0 width="100%"}
+
+## {data-menu-title="Insect frass as co-substrate"}
+
+![](slides/Slide14.PNG){.absolute left=0 bottom=0 width="100%"}
+
+## {data-menu-title="Insect frass as co-substrate"}
+
+![](slides/Slide15.PNG){.absolute left=0 bottom=0 width="100%"}
+
+## {data-menu-title="Case study"}
+
+![](slides/Slide17.PNG){.absolute left=0 bottom=0 width="100%"}
+
+
+## {data-menu-title="Challenges and opportunities"}
+
+![](slides/Slide18.PNG){.absolute left=0 bottom=0 width="100%"}
+
+
+

@@ -1,0 +1,31 @@
+{
+    "id": "CF7DF398",
+    "path": "~/Github/teaching-demonstration/_assets/presentation/presentation.qmd",
+    "project_path": "_assets/presentation/presentation.qmd",
+    "type": "quarto_markdown",
+    "hash": "1024250229",
+    "contents": "",
+    "dirty": false,
+    "created": 1779808011206.0,
+    "source_on_save": false,
+    "relative_order": 6,
+    "properties": {
+        "rmdVisualMode": "false",
+        "rmdVisualWrapConfigured": "true",
+        "source_window_id": "",
+        "Source": "Source",
+        "docOutlineVisible": "0",
+        "rmdVisualCollapsedChunks": "",
+        "cursorPosition": "42,0",
+        "scrollLine": "30",
+        "rmdVisualModeLocation": "208:0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1795093131,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1795093131491,
+    "read_only": false,
+    "read_only_alternatives": []
+}

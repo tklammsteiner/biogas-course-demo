@@ -1,0 +1,37 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Valorization of insect frass for biogas production",
+    "section": "",
+    "text": "In this lecture, we will explore the valorization of insect frass (i.e. the residual material from insect bioconversion processes) as a co-substrate for biomethane production. The session covers the intersection of circular economy principles, waste-to-energy systems, and sustainable bioprocessing technologies.\n\nKey Topics:\n\nInsect frass composition and characteristics relevant for biomethanization\nAnaerobic co-digestion for enhanced biogas production\nProcess optimization strategies: Pretreatment methods, co-digestion with other organic substrates, retention time and temperature considerations\nCurrent challenges and opportunities: Scale-up limitations, regulatory frameworks, integration with insect farming systems, economic potential\n\n\nLearning outcomes: By the end of this lecture, you will have an understanding of how insect frass can be integrated into circular bioeconomy systems, be able to evaluate different bioprocessing technologies for frass valorization, and assess the feasibility of frass-based bioenergy production."
+  },
+  {
+    "objectID": "index.html#biogas-dashboard",
+    "href": "index.html#biogas-dashboard",
+    "title": "Valorization of insect frass for biogas production",
+    "section": "Biogas dashboard",
+    "text": "Biogas dashboard\n\n\n\nPlease note: This dashboard was built for demonstration purposes only and is based on simulated data to serve as an example on how interactive tools could be used to visualize bioprocess dynamics in teaching. Claude Sonnet 4.6 was used to assist with programming."
+  },
+  {
+    "objectID": "index.html#slides",
+    "href": "index.html#slides",
+    "title": "Valorization of insect frass for biogas production",
+    "section": "Slides",
+    "text": "Slides"
+  },
+  {
+    "objectID": "index.html#further-reading",
+    "href": "index.html#further-reading",
+    "title": "Valorization of insect frass for biogas production",
+    "section": "Further reading",
+    "text": "Further reading\n\nDal Magro et al. (2022) Bioresour Technol 412, 131384 doi: doi.org/10.1016/j.biortech.2024.131384\nLiu et al. (2022) Sci Total Environ 833, 155122 doi: 10.1016/j.scitotenv.2022.155122\nInsam et al. (2022) Biology of compost, in: Encycl Soils Environ, 2nd ed. doi: 10.1016/B978-0-12-822974-3.00178-6\nCommission Regulation (EU) 2021/1925 of 5 November 2021. url: data.europa.eu/eli/reg/2021/1925/oj"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "Thomas Klammsteiner",
+    "section": "",
+    "text": "I am a microbiologist specializing in microbial ecology, with a strong focus on microbiome research related to digestion and microbe-host interactions. I am broadly interested in biological data science and apply advanced analytical approaches to better understand complex biological systems. Through my research, I aim to contribute new insights and practical solutions that bridge fundamental science and real-world applications."
+  }
+]

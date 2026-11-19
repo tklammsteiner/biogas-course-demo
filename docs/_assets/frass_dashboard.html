@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frass co-digestion dashboard</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-primary: #ffffff;
+      --bg-secondary: #f5f5f4;
+      --bg-tertiary: #e8e8e6;
+      --text-primary: #1a1a18;
+      --text-secondary: #5f5e5a;
+      --text-tertiary: #9a9994;
+      --border-light: rgba(0,0,0,0.12);
+      --border-mid: rgba(0,0,0,0.22);
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --green-fill: #E1F5EE;
+      --green-text: #0F6E56;
+      --amber-fill: #FAEEDA;
+      --amber-text: #854F0B;
+      --red-fill: #FCEBEB;
+      --red-text: #A32D2D;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-primary: #1e1e1c;
+        --bg-secondary: #282825;
+        --bg-tertiary: #323230;
+        --text-primary: #f0efeb;
+        --text-secondary: #a8a7a2;
+        --text-tertiary: #6e6d69;
+        --border-light: rgba(255,255,255,0.10);
+        --border-mid: rgba(255,255,255,0.18);
+        --green-fill: #085041;
+        --green-text: #9FE1CB;
+        --amber-fill: #633806;
+        --amber-text: #FAC775;
+        --red-fill: #791F1F;
+        --red-text: #F7C1C1;
+      }
+    }
+
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-size: 15px;
+      color: var(--text-primary);
+      background: var(--bg-primary);
+      padding: 1.5rem 1.75rem 2rem;
+      line-height: 1.5;
+    }
+
+    .top-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 1.1rem;
+    }
+
+    .metric {
+      background: var(--bg-secondary);
+      border-radius: var(--radius-md);
+      padding: .85rem 1rem;
+    }
+    .metric-label { font-size: 12px; color: var(--text-secondary); margin-bottom: 3px; }
+    .metric-value { font-size: 21px; font-weight: 500; color: var(--text-primary); }
+    .metric-unit  { font-size: 11px; color: var(--text-tertiary); margin-top: 2px; }
+
+    .panel-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .9rem;
+      margin-bottom: .9rem;
+    }
+
+    .panel {
+      background: var(--bg-primary);
+      border: .5px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: .95rem 1.15rem;
+    }
+
+    .ptitle {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: .8rem;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .srow {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: .6rem;
+    }
+    .slabel { font-size: 13px; color: var(--text-secondary); min-width: 100px; }
+    .sval   { font-size: 13px; font-weight: 500; min-width: 42px; text-align: right; color: var(--text-primary); }
+
+    input[type=range] {
+      flex: 1;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--border-mid);
+      outline: none;
+      cursor: pointer;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: var(--text-primary);
+      cursor: pointer;
+    }
+    input[type=range]::-moz-range-thumb {
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: var(--text-primary);
+      border: none;
+      cursor: pointer;
+    }
+
+    .bar-wrap { margin-bottom: 6px; }
+    .bar-lr   { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-secondary); margin-bottom: 2px; }
+    .bar-track { height: 8px; background: var(--bg-secondary); border-radius: 4px; overflow: hidden; }
+    .bar-fill  { height: 100%; border-radius: 4px; transition: width .22s ease; }
+
+    .cn-indicator { position: relative; height: 20px; margin: 4px 0 2px; }
+    .cn-track {
+      height: 8px; border-radius: 4px; margin-top: 6px;
+      background: linear-gradient(to right, #185FA5 0%, #1D9E75 33%, #1D9E75 58%, #D85A30 100%);
+    }
+    .cn-needle {
+      position: absolute; width: 2px; height: 20px;
+      background: var(--text-primary); top: 0; border-radius: 1px;
+      transition: left .3s ease;
+    }
+    .cn-zone {
+      display: flex; justify-content: space-between;
+      font-size: 10px; color: var(--text-tertiary); margin-top: 2px;
+    }
+
+    .badge {
+      display: inline-block; font-size: 11px;
+      padding: 2px 8px; border-radius: var(--radius-md); font-weight: 500;
+    }
+    .badge-good { background: var(--green-fill); color: var(--green-text); }
+    .badge-warn { background: var(--amber-fill); color: var(--amber-text); }
+    .badge-bad  { background: var(--red-fill);   color: var(--red-text); }
+
+    .legend-row  { display: flex; gap: 13px; flex-wrap: wrap; margin-bottom: 7px; }
+    .legend-item { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--text-secondary); }
+    .legend-dot  { width: 10px; height: 10px; border-radius: 2px; }
+
+    .sub-section {
+      background: var(--bg-secondary);
+      border-radius: var(--radius-md);
+      padding: .7rem .95rem;
+      margin-top: .7rem;
+    }
+    .sub-section-bordered {
+      border: .5px solid var(--border-light);
+    }
+
+    .frass-badges { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 5px; }
+    .hrt-badges   { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 4px; }
+
+    .pill-tag {
+      font-size: 11px; padding: 2px 8px;
+      border-radius: var(--radius-md);
+      border: .5px solid var(--border-mid);
+      color: var(--text-secondary);
+    }
+
+    .divider { height: .5px; background: var(--border-light); margin: .85rem 0; }
+
+    .note-panel {
+      background: var(--bg-secondary);
+      border-radius: var(--radius-lg);
+      padding: .85rem 1.15rem;
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    table { border-collapse: collapse; }
+
+    @media (max-width: 600px) {
+      body { padding: 1rem; }
+      .top-metrics { grid-template-columns: repeat(2, 1fr); }
+      .panel-row   { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-metrics">
+    <div class="metric">
+      <div class="metric-label">CH₄ yield</div>
+      <div class="metric-value" id="m-biogas">—</div>
+      <div class="metric-unit">m³ CH₄ / t VS</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Mix C:N ratio</div>
+      <div class="metric-value" id="m-cn">—</div>
+      <div class="metric-unit">optimal: 20–30</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">HRT efficiency</div>
+      <div class="metric-value" id="m-hrt-eff">—</div>
+      <div class="metric-unit">% of max yield</div>
+    </div>
+    <div class="metric">
+      <div class="metric-label">Status</div>
+      <div class="metric-value" style="font-size:14px;padding-top:4px" id="m-status">—</div>
+      <div class="metric-unit" id="m-status-note"></div>
+    </div>
+  </div>
+
+  <div class="panel-row">
+
+    <div class="panel">
+      <div class="ptitle">Substrate mix (% VS)</div>
+      <div class="srow">
+        <span class="slabel">Frass (BSF)</span>
+        <input type="range" id="sl-frass" min="0" max="100" step="1" value="30">
+        <span class="sval" id="lbl-frass">30%</span>
+      </div>
+      <div class="srow">
+        <span class="slabel">Cattle slurry</span>
+        <input type="range" id="sl-slurry" min="0" max="100" step="1" value="40">
+        <span class="sval" id="lbl-slurry">40%</span>
+      </div>
+      <div class="srow">
+        <span class="slabel">Food waste</span>
+        <input type="range" id="sl-food" min="0" max="100" step="1" value="30">
+        <span class="sval" id="lbl-food">30%</span>
+      </div>
+
+      <div style="margin-top:.8rem">
+        <div class="bar-wrap">
+          <div class="bar-lr"><span>Frass</span><span id="pct-frass">30%</span></div>
+          <div class="bar-track"><div class="bar-fill" id="bar-frass" style="background:#185FA5;width:30%"></div></div>
+        </div>
+        <div class="bar-wrap">
+          <div class="bar-lr"><span>Cattle slurry</span><span id="pct-slurry">40%</span></div>
+          <div class="bar-track"><div class="bar-fill" id="bar-slurry" style="background:#BA7517;width:40%"></div></div>
+        </div>
+        <div class="bar-wrap">
+          <div class="bar-lr"><span>Food waste</span><span id="pct-food">30%</span></div>
+          <div class="bar-track"><div class="bar-fill" id="bar-food" style="background:#1D9E75;width:30%"></div></div>
+        </div>
+      </div>
+      <div id="mix-warning" style="font-size:12px;color:#854F0B;margin-top:5px;min-height:14px"></div>
+
+      <div class="sub-section sub-section-bordered">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem">
+          <span class="ptitle" style="margin-bottom:0">Frass quality</span>
+          <span style="font-size:11px;color:var(--text-tertiary)">adjustable</span>
+        </div>
+        <div class="srow">
+          <span class="slabel">Water content</span>
+          <input type="range" id="sl-wc" min="40" max="85" step="1" value="65">
+          <span class="sval" id="lbl-wc">65%</span>
+        </div>
+        <div class="srow" style="margin-bottom:2px">
+          <span class="slabel">C:N ratio</span>
+          <input type="range" id="sl-cn-frass" min="5" max="20" step="1" value="9">
+          <span class="sval" id="lbl-cn-frass">9</span>
+        </div>
+        <div class="frass-badges" id="frass-badges"></div>
+      </div>
+
+      <div class="sub-section">
+        <div class="ptitle" style="margin-bottom:.45rem">Hydraulic retention time</div>
+        <div class="srow" style="margin-bottom:3px">
+          <input type="range" id="sl-hrt" min="10" max="40" step="1" value="20" style="flex:1">
+          <span class="sval" id="lbl-hrt" style="min-width:48px">20 d</span>
+        </div>
+        <div class="hrt-badges" id="hrt-badges"></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="ptitle">C:N ratio indicator</div>
+      <div class="cn-indicator">
+        <div class="cn-track"></div>
+        <div class="cn-needle" id="cn-needle" style="left:35%"></div>
+      </div>
+      <div class="cn-zone">
+        <span>N-rich (&lt;15)</span>
+        <span style="text-align:center">Optimal (20–30)</span>
+        <span>C-rich (&gt;40)</span>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="ptitle">Frass VS content</div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:.85rem">
+        <div style="flex:1">
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-secondary);margin-bottom:3px">
+            <span>VS (dry matter)</span><span id="vs-pct-label">35%</span>
+          </div>
+          <div class="bar-track" style="height:12px">
+            <div class="bar-fill" id="bar-vs" style="background:#185FA5;width:35%"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text-tertiary);margin-top:2px">
+            <span>water</span><span>volatile solids</span>
+          </div>
+        </div>
+        <div style="text-align:center;min-width:54px">
+          <div style="font-size:18px;font-weight:500;color:var(--text-primary)" id="vs-pct-big">35%</div>
+          <div style="font-size:10px;color:var(--text-tertiary)">VS fraction</div>
+        </div>
+      </div>
+
+      <div class="ptitle">Substrate reference</div>
+      <table style="width:100%;font-size:12px;table-layout:fixed">
+        <colgroup><col style="width:42%"><col style="width:14%"><col style="width:22%"><col style="width:22%"></colgroup>
+        <thead>
+          <tr style="color:var(--text-secondary)">
+            <th style="text-align:left;padding:3px 0;font-weight:500">Substrate</th>
+            <th style="text-align:right;padding:3px 0;font-weight:500">C:N</th>
+            <th style="text-align:right;padding:3px 0;font-weight:500">CH₄ (m³/tVS)</th>
+            <th style="text-align:right;padding:3px 0;font-weight:500">Min HRT (d)</th>
+          </tr>
+        </thead>
+        <tbody style="color:var(--text-primary)">
+          <tr><td style="padding:3px 0">Frass (BSF)</td><td style="text-align:right" id="ref-frass-cn">9</td><td style="text-align:right" id="ref-frass-yld">240</td><td style="text-align:right">15–20</td></tr>
+          <tr><td style="padding:3px 0">Cattle slurry</td><td style="text-align:right">12</td><td style="text-align:right">185</td><td style="text-align:right">20–30</td></tr>
+          <tr><td style="padding:3px 0">Food waste</td><td style="text-align:right">17</td><td style="text-align:right">360</td><td style="text-align:right">15–25</td></tr>
+        </tbody>
+      </table>
+      <div style="font-size:10px;color:var(--text-tertiary);margin-top:4px">Frass C:N and yield update with sliders.</div>
+
+      <div class="divider"></div>
+      <div class="ptitle">HRT saturation curve</div>
+      <div style="position:relative;width:100%;height:110px">
+        <canvas id="hrtChart" role="img" aria-label="Michaelis-Menten curve: yield efficiency vs HRT">Yield rises steeply below 20 d and plateaus above 30 d.</canvas>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="panel" style="margin-bottom:.9rem">
+    <div class="ptitle">Estimated CH₄ yield vs frass fraction</div>
+    <div class="legend-row">
+      <div class="legend-item"><div class="legend-dot" style="background:#185FA5"></div>Frass + Cattle slurry</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#1D9E75"></div>Frass + Food waste</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#888780;opacity:.7"></div>Current mix</div>
+    </div>
+    <div style="position:relative;width:100%;height:185px">
+      <canvas id="yieldChart" role="img" aria-label="Line chart of estimated methane yield vs frass fraction for two co-substrate pairings">Yields vary from ~160 to ~380 m³/t VS.</canvas>
+    </div>
+  </div>
+
+  <div class="note-panel">
+    <span style="font-weight:500">Model notes:</span>
+    Water content affects frass CH₄ yield via VS dilution: yield<sub>adj</sub> = yield<sub>base</sub> × (1 − WC%) / 0.35,
+    normalised to a reference of 35% VS (65% water). C:N directly sets the frass contribution to the blended C:N.
+    HRT effect: Michaelis–Menten with K<sub>m</sub> = 12 d, normalised at HRT = 30 d.
+    All yields are VS-weighted composites.
+  </div>
+
+  <script>
+    const BASE_FRASS = { cn: 9, yld: 240, minHRT: 17 };
+    const SLURRY     = { cn: 12, yld: 185, minHRT: 25 };
+    const FOOD       = { cn: 17, yld: 360, minHRT: 20 };
+    const Km = 12, REF_HRT = 30, REF_WC = 0.65;
+
+    function hrtFactor(hrt) {
+      const ref = REF_HRT / (Km + REF_HRT);
+      return (hrt / (Km + hrt)) / ref;
+    }
+    function hrtPct(hrt) { return Math.round(hrtFactor(hrt) * 100); }
+
+    function wcYieldFactor(wc) {
+      const vs = 1 - wc / 100;
+      return vs / (1 - REF_WC);
+    }
+    function frassYield(wc) { return Math.round(BASE_FRASS.yld * wcYieldFactor(wc)); }
+
+    function getVals() {
+      return {
+        frass:  +document.getElementById('sl-frass').value,
+        slurry: +document.getElementById('sl-slurry').value,
+        food:   +document.getElementById('sl-food').value,
+        hrt:    +document.getElementById('sl-hrt').value,
+        wc:     +document.getElementById('sl-wc').value,
+        cnF:    +document.getElementById('sl-cn-frass').value,
+      };
+    }
+
+    function computeMix(v) {
+      const total = v.frass + v.slurry + v.food;
+      if (total === 0) return null;
+      const pF = v.frass/total, pS = v.slurry/total, pFo = v.food/total;
+      const adjYld = frassYield(v.wc);
+      const cn     = pF * v.cnF + pS * SLURRY.cn + pFo * FOOD.cn;
+      const baseYld = pF * adjYld + pS * SLURRY.yld + pFo * FOOD.yld;
+      const yld    = baseYld * hrtFactor(v.hrt);
+      const minHRT = pF * BASE_FRASS.minHRT + pS * SLURRY.minHRT + pFo * FOOD.minHRT;
+      return { cn, yld, frass: Math.round(pF * 100), minHRT, adjYld };
+    }
+
+    function cnStatus(cn) {
+      if (cn < 15) return { label: 'N-rich', cls: 'badge-warn', note: 'Risk of NH₃ inhibition' };
+      if (cn > 35) return { label: 'C-rich', cls: 'badge-warn', note: 'Low N for microbes' };
+      return { label: 'Optimal', cls: 'badge-good', note: 'Stable methanogenesis' };
+    }
+    function cnNeedlePos(cn) { return Math.min(98, Math.max(2, (cn - 5) / 45 * 100)); }
+
+    function wcStatus(wc) {
+      if (wc < 50) return { label: 'Low moisture', cls: 'badge-warn' };
+      if (wc > 80) return { label: 'High moisture', cls: 'badge-warn' };
+      return { label: 'Typical range', cls: 'badge-good' };
+    }
+    function cnFrassStatus(cn) {
+      if (cn <= 7)  return { label: 'Very N-rich', cls: 'badge-bad' };
+      if (cn <= 12) return { label: 'N-rich (typical)', cls: 'badge-warn' };
+      return { label: 'Moderate', cls: 'badge-good' };
+    }
+
+    function update() {
+      const v = getVals();
+      const total = v.frass + v.slurry + v.food;
+
+      document.getElementById('lbl-frass').textContent   = v.frass + '%';
+      document.getElementById('lbl-slurry').textContent  = v.slurry + '%';
+      document.getElementById('lbl-food').textContent    = v.food + '%';
+      document.getElementById('lbl-hrt').textContent     = v.hrt + ' d';
+      document.getElementById('lbl-wc').textContent      = v.wc + '%';
+      document.getElementById('lbl-cn-frass').textContent = v.cnF;
+
+      const vsPct = Math.round((1 - v.wc / 100) * 100);
+      document.getElementById('vs-pct-label').textContent = vsPct + '%';
+      document.getElementById('vs-pct-big').textContent   = vsPct + '%';
+      document.getElementById('bar-vs').style.width = vsPct + '%';
+
+      const adjYld = frassYield(v.wc);
+      document.getElementById('ref-frass-cn').textContent  = v.cnF;
+      document.getElementById('ref-frass-yld').textContent = adjYld;
+
+      const wcSt  = wcStatus(v.wc);
+      const cnFSt = cnFrassStatus(v.cnF);
+      document.getElementById('frass-badges').innerHTML =
+        `<span class="badge ${wcSt.cls}">${wcSt.label}</span>` +
+        `<span class="badge ${cnFSt.cls}">${cnFSt.label}</span>` +
+        `<span style="font-size:11px;color:var(--text-tertiary);align-self:center">VS: ${vsPct}% → ${adjYld} m³/tVS</span>`;
+
+      if (total === 0) {
+        document.getElementById('mix-warning').textContent = 'Set at least one substrate above 0.';
+        return;
+      }
+      document.getElementById('mix-warning').textContent = '';
+
+      const pF = v.frass/total, pS = v.slurry/total, pFo = v.food/total;
+      document.getElementById('bar-frass').style.width  = Math.round(pF*100)+'%';
+      document.getElementById('bar-slurry').style.width = Math.round(pS*100)+'%';
+      document.getElementById('bar-food').style.width   = Math.round(pFo*100)+'%';
+      document.getElementById('pct-frass').textContent  = Math.round(pF*100)+'%';
+      document.getElementById('pct-slurry').textContent = Math.round(pS*100)+'%';
+      document.getElementById('pct-food').textContent   = Math.round(pFo*100)+'%';
+
+      const mix = computeMix(v);
+      document.getElementById('m-biogas').textContent  = Math.round(mix.yld);
+      document.getElementById('m-cn').textContent      = mix.cn.toFixed(1);
+      document.getElementById('m-hrt-eff').textContent = hrtPct(v.hrt);
+
+      const st = cnStatus(mix.cn);
+      document.getElementById('m-status').innerHTML        = `<span class="badge ${st.cls}">${st.label}</span>`;
+      document.getElementById('m-status-note').textContent = st.note;
+      document.getElementById('cn-needle').style.left      = cnNeedlePos(mix.cn) + '%';
+
+      const zones = [
+        { label:'Below min HRT', test: h => h < Math.round(mix.minHRT) - 3, cls:'badge-bad' },
+        { label:'Sub-optimal',   test: h => h < Math.round(mix.minHRT),     cls:'badge-warn' },
+        { label:'Adequate',      test: h => h < 30,                          cls:'badge-good' },
+        { label:'Optimal',       test: () => true,                           cls:'badge-good' },
+      ];
+      const zone = zones.find(z => z.test(v.hrt));
+      document.getElementById('hrt-badges').innerHTML =
+        `<span class="badge ${zone.cls}">${zone.label}</span>` +
+        `<span class="pill-tag">Min ~${Math.round(mix.minHRT)} d</span>`;
+
+      updateYieldChart(v, pF, mix.yld);
+      updateHrtMarker(v.hrt);
+    }
+
+    let yieldChart, hrtChart;
+
+    function buildYieldChart() {
+      const v = getVals();
+      const labels = [0,10,20,30,40,50,60,70,80,90,100];
+      const hf   = hrtFactor(v.hrt);
+      const adjF = frassYield(v.wc);
+      const s1 = labels.map(p => { const f=p/100; return Math.round((f*adjF+(1-f)*SLURRY.yld)*hf); });
+      const s2 = labels.map(p => { const f=p/100; return Math.round((f*adjF+(1-f)*FOOD.yld)*hf); });
+
+      yieldChart = new Chart(document.getElementById('yieldChart'), {
+        type: 'line',
+        data: {
+          labels: labels.map(l => l+'%'),
+          datasets: [
+            { label:'Frass + Cattle slurry', data:s1, borderColor:'#185FA5', borderWidth:2, pointRadius:2, tension:.3, fill:false, borderDash:[], pointStyle:'circle' },
+            { label:'Frass + Food waste',    data:s2, borderColor:'#1D9E75', borderWidth:2, pointRadius:2, tension:.3, fill:false, borderDash:[4,3], pointStyle:'rectRot' },
+            { label:'Current mix', data:labels.map(()=>null), borderColor:'#888780', borderWidth:0, pointStyle:'rectRot', pointRadius:9, showLine:false, backgroundColor:'rgba(136,135,128,.7)' }
+          ]
+        },
+        options: {
+          responsive:true, maintainAspectRatio:false,
+          plugins:{ legend:{display:false}, tooltip:{callbacks:{label:ctx=>ctx.dataset.label+': '+ctx.parsed.y+' m³/t VS'}} },
+          scales:{
+            x:{ title:{display:true,text:'Frass fraction (%)',font:{size:10},color:'#888780'}, ticks:{font:{size:10}} },
+            y:{ title:{display:true,text:'m³ CH₄ / t VS',font:{size:10},color:'#888780'}, ticks:{font:{size:10}}, min:80, max:430 }
+          }
+        }
+      });
+    }
+
+    function buildHrtChart() {
+      const hrtVals = Array.from({length:31}, (_,i) => i+10);
+      hrtChart = new Chart(document.getElementById('hrtChart'), {
+        type: 'line',
+        data: {
+          labels: hrtVals.map(h => h+'d'),
+          datasets: [
+            { label:'Efficiency', data:hrtVals.map(h=>hrtPct(h)), borderColor:'#185FA5', borderWidth:2, pointRadius:0, tension:.4, fill:true, backgroundColor:'rgba(24,95,165,0.07)' },
+            { label:'Current',    data:hrtVals.map(()=>null), borderColor:'#D85A30', borderWidth:0, pointStyle:'line', pointRadius:8, showLine:false, backgroundColor:'#D85A30' }
+          ]
+        },
+        options: {
+          responsive:true, maintainAspectRatio:false,
+          plugins:{ legend:{display:false}, tooltip:{callbacks:{label:ctx=>ctx.parsed.y+'%'}} },
+          scales:{
+            x:{ ticks:{font:{size:10}, maxTicksLimit:7}, grid:{display:false} },
+            y:{ min:50, max:105, ticks:{font:{size:10}, callback:v=>v+'%'} }
+          }
+        }
+      });
+    }
+
+    function updateYieldChart(v, frassShare, mixYld) {
+      if (!yieldChart) return;
+      const hf   = hrtFactor(v.hrt);
+      const adjF = frassYield(v.wc);
+      const labels = [0,10,20,30,40,50,60,70,80,90,100];
+      yieldChart.data.datasets[0].data = labels.map(p => { const f=p/100; return Math.round((f*adjF+(1-f)*SLURRY.yld)*hf); });
+      yieldChart.data.datasets[1].data = labels.map(p => { const f=p/100; return Math.round((f*adjF+(1-f)*FOOD.yld)*hf); });
+      const idx = Math.round(frassShare * 10);
+      yieldChart.data.datasets[2].data = labels.map((_,i) => i===idx ? Math.round(mixYld) : null);
+      yieldChart.update('none');
+    }
+
+    function updateHrtMarker(hrt) {
+      if (!hrtChart) return;
+      const idx = hrt - 10;
+      hrtChart.data.datasets[1].data = Array.from({length:31}, (_,i) => i===idx ? hrtPct(hrt) : null);
+      hrtChart.update('none');
+    }
+
+    ['sl-frass','sl-slurry','sl-food','sl-hrt','sl-wc','sl-cn-frass'].forEach(id => {
+      document.getElementById(id).addEventListener('input', update);
+    });
+
+    buildYieldChart();
+    buildHrtChart();
+    update();
+  </script>
+</body>
+</html>
